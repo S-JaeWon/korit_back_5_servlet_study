@@ -51,6 +51,7 @@ public class ProductServlet extends HttpServlet {
 				.size(request.getParameter("size"))
 				.color(request.getParameter("color"))
 				.build();
+		
 		//중복확인
 		if(productService.getProduct(product.getProductname()) != null) {
 			response.setStatus(400);

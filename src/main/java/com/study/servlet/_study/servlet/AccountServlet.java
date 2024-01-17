@@ -49,6 +49,7 @@ public class AccountServlet extends HttpServlet {
 		
 		//TODO service repository 나누기 순서
 		int body = accountService.addAccount(account); // 1)account 객체 넘겨주고 addAccount 생성 //서비스에서 받은 리턴 값 1, body에 대입 
+		
 		response.setStatus(201);
 		response.getWriter().println(body);
 	}
