@@ -1,0 +1,13 @@
+데이터베이스(DataBase)란?
+
+데이터베이스(DB: database)는 통합하여 관리되는 데이터의 집합체를 의미합니다.
+이는 중복된 데이터를 없애고, 자료를 구조화하여, 효율적인 처리를 할 수 있도록 관리됩니다.
+따라서, 여러 업무에 여러 사용자가 데이터 베이스를 사용할 수 있습니다.
+이러한 데이터베이스는 응용 프로그램과는 다른 별도의 미들웨어에 의해 관리됩니다.
+데이터베이스를 관리하는 이러한 미들웨어를 데이터베이스 관리 시스템(DBMS: Database Management System)이라고 합니다.
+
+개발시 데이터베이스 선택 가이드
+https://youtu.be/ZVuHZ2Fjkl4?si=sdyX0ddQAMkApRBo
+
+데이터 정규화가 뭔지 설명해보세요
+https://youtu.be/Y1FbowQRcmI?si=eF--Wl1yEcgb4fY-
