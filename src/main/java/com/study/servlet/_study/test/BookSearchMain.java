@@ -16,6 +16,8 @@ public class BookSearchMain {
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
+		System.out.print("도서명 검색 >>> ");
+		String name = scanner.nextLine();
 		// 검색할 도서명을 입력하세요 >>> 글
 		
 		// 도서명 / 저자명 / 출판사
@@ -25,42 +27,45 @@ public class BookSearchMain {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		List<Book> bookList = new ArrayList<>();
 		
 		try {
 			con = pool.getConnection();
-			System.out.print("도서명 검색 >>> ");
-			String name = "%" + scanner.nextLine() + "%";
+			
 			String sql = "select\r\n"
-					+ "	brt.book_id,\r\n"
-					+ "	bt.book_name,\r\n"
-					+ "	bt.author_id,\r\n"
-					+ "	at.author_name,\r\n"
-					+ "	bt.publisher_id,\r\n"
-					+ "	pt.publisher_name,\r\n"
-					+ "	sum(brt.loans_count) as total_loans_count\r\n"
+					+ "	bt.book_id,\r\n"
+					+ "    bt.book_name,\r\n"
+					+ "    at.author_id,\r\n"
+					+ "    at.author_name,\r\n"
+					+ "    pt.publisher_id,\r\n"
+					+ "    pt.publisher_name\r\n"
 					+ "from\r\n"
-					+ "	book_register_tb brt\r\n"
-					+ "	left outer join\r\n"
-					+ "		book_tb bt on (bt.book_id = brt.book_id)\r\n"
-					+ "	left outer join\r\n"
-					+ "		author_tb at on (at.author_id = bt.author_id)\r\n"
-					+ "	left outer join\r\n"
-					+ "		publisher_tb pt on (pt.publisher_id = bt.publisher_id)\r\n"
+					+ "	book_tb bt\r\n"
+					+ "    left outer join author_tb at on(at.author_id = bt.author_id)\r\n"
+					+ "    left outer join publisher_tb pt on(pt.publisher_id = bt.publisher_id)\r\n"
 					+ "where\r\n"
-					+ "bt.book_name like ?\r\n"
-					+ "group by\r\n"
-					+ "	brt.book_id,\r\n"
-					+ "	bt.author_id,\r\n"
-					+ "	bt.publisher_id\r\n"
-					+ "order by\r\n"
-					+ "	book_id; ";
+					+ "	bt.book_name like ?;";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, name);
+			pstmt.setString(1, "%" + name + "%");
 			rs = pstmt.executeQuery();
 			
-			List<Book> bookList = new ArrayList<>();
-			
 			while(rs.next()) {
+				/*Author author = Author.builder()
+						.authorId(rs.getInt(3))
+						.authorName(rs.getString(4))
+						.build();*/
+				/*Publisher publisher = Publisher.builder()
+						.publisherId(rs.getInt(5))
+						.publisherName(rs.getString(6))
+						.build();*/
+				/*Book book = Book.builder()
+						.bookId(rs.getInt(1))
+						.bookName(rs.getString(2))
+						.author(Author)
+						.publisher(Publisher)
+						.build();*/
+				/*bookList.add(book);*/
+				
 				bookList.add(Book.builder()
 						.bookId(rs.getInt(1))
 						.bookName(rs.getString(2))
@@ -69,13 +74,16 @@ public class BookSearchMain {
 			            .build());
 			}
 			
-			bookList.forEach(book -> System.out.println(book));
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt,rs);
+		}
+		// bookList.forEach(book -> System.out.println(book));
+		System.out.println("도서명 / 저자명 / 출판사");
+		for(Book book : bookList) {
+			
+			System.out.println(book.getBookName() + " / " + book.getAuthor().getAuthorName() + " / " + book.getPublisher().getPublisherName());
 		}
 	}
 
